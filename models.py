@@ -172,6 +172,8 @@ class OrderProduct(db.Model):
 
 class BillingAddress(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship("User", backref="BillingAddress")
     oid = db.Column(db.Integer, db.ForeignKey("order.id"))
     full_name = db.Column(db.String(200), nullable=False)
     country = db.Column(db.String(200), nullable=False)
@@ -211,6 +213,8 @@ class BillingAddress(db.Model):
 
 class ShippingAddress(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship("User", backref="BillingAddress")
     oid = db.Column(db.Integer, db.ForeignKey("order.id"))
     full_name = db.Column(db.String(200), nullable=False)
     country = db.Column(db.String(200), nullable=False)
