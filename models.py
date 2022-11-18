@@ -193,6 +193,7 @@ class BillingAddress(db.Model):
     def to_json(self):
         return {
             'id': self.id,
+            'uid':self.uid,
             'oid': self.oid,
             'full_name': self.full_name,
             'country': self.country,
@@ -234,6 +235,7 @@ class ShippingAddress(db.Model):
     def to_json(self):
         return {
             'id': self.id,
+            'uid':self.uid,
             'oid': self.oid,
             'full_name': self.full_name,
             'country': self.country,
