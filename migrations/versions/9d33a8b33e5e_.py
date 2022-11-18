@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 22c75697c01e
+Revision ID: 9d33a8b33e5e
 Revises: 
-Create Date: 2022-11-17 10:21:53.377395
+Create Date: 2022-11-18 08:59:42.674006
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '22c75697c01e'
+revision = '9d33a8b33e5e'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -84,6 +84,7 @@ def upgrade():
     )
     op.create_table('billing_address',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('uid', sa.Integer(), nullable=True),
     sa.Column('oid', sa.Integer(), nullable=True),
     sa.Column('full_name', sa.String(length=200), nullable=False),
     sa.Column('country', sa.String(length=200), nullable=False),
@@ -100,6 +101,7 @@ def upgrade():
     sa.Column('updated_by', sa.Integer(), nullable=True),
     sa.Column('updated_date', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['oid'], ['order.id'], ),
+    sa.ForeignKeyConstraint(['uid'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('order_product',
@@ -120,6 +122,7 @@ def upgrade():
     )
     op.create_table('shipping_address',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('uid', sa.Integer(), nullable=True),
     sa.Column('oid', sa.Integer(), nullable=True),
     sa.Column('full_name', sa.String(length=200), nullable=False),
     sa.Column('country', sa.String(length=200), nullable=False),
@@ -136,6 +139,7 @@ def upgrade():
     sa.Column('updated_by', sa.Integer(), nullable=True),
     sa.Column('updated_date', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['oid'], ['order.id'], ),
+    sa.ForeignKeyConstraint(['uid'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
