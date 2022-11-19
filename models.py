@@ -22,10 +22,9 @@ def create_table(app):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     firebase_uid = db.Column(db.String(200), unique=True, nullable=False)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    userName = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     mobile = db.Column(db.String(200), unique=True, nullable=False)
-    items_in_cart = db.relationship('Product', secondary='Cart', backref='cart-products')
     is_active = db.Column(db.Boolean, default=True, nullable=False)
     is_deleted = db.Column(db.Boolean, default=False, nullable=False)
     created_by = db.Column(db.Integer, nullable=True)
@@ -37,7 +36,7 @@ class User(db.Model):
         return {
             'id': self.id,
             'firebase_id': self.firebase_uid,
-            'username': self.username,
+            'userName': self.userName,
             'email': self.email,
             'mobile': self.mobile,
             'is_active': self.is_active,
@@ -85,6 +84,7 @@ class Product(db.Model):
 class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uid = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='Cart')
     pid = db.Column('product_id', db.Integer, db.ForeignKey('product.id'))
     is_active = db.Column(db.Boolean, default=True, nullable=False)
     is_deleted = db.Column(db.Boolean, default=False, nullable=False)
@@ -173,7 +173,7 @@ class OrderProduct(db.Model):
 class BillingAddress(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uid = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User", backref="BillingAddress")
+    user_billing = db.relationship("User", backref="BillingAddress")
     oid = db.Column(db.Integer, db.ForeignKey("order.id"))
     full_name = db.Column(db.String(200), nullable=False)
     country = db.Column(db.String(200), nullable=False)
@@ -215,7 +215,7 @@ class BillingAddress(db.Model):
 class ShippingAddress(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uid = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User", backref="BillingAddress")
+    user_shipping = db.relationship("User", backref="ShippingAddress")
     oid = db.Column(db.Integer, db.ForeignKey("order.id"))
     full_name = db.Column(db.String(200), nullable=False)
     country = db.Column(db.String(200), nullable=False)
